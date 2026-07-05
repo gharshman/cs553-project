@@ -6,6 +6,16 @@ const app = express();
 
 app.use(express.json());
 
+app.set('json spaces', 4); 
+
+app.get("/", (_req, res) => {
+	res.json({
+		status: "ok",
+		service: "cs453-api",
+		message: "valid commands: /health, /db-health, /tasks, ..."
+	});
+});
+
 app.get("/health", (_req, res) => {
 	res.json({
 		status: "ok",
