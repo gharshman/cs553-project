@@ -2,13 +2,12 @@
 	"name": "cs453-api",
 	"version": "1.0.0",
 	"description": "Starter API for CS453/553 Client-Server Architectures",
-	"main": "dist/server.js",
-
+	"main": "dist/server.ts",
 	"scripts": {
 		"test": "jest",
 		"dev": "ts-node-dev --respawn --transpile-only src/server.ts",
 		"build": "tsc",
-		"start": "node dist/server.js"
+		"start": "node dist/server.ts"
 	},
 	"author": "dschrimpsher",
 	"license": "UNLICENSED",

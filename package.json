@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"dev": "npm --prefix apps/api run dev",
 		"db:start": "docker compose up -d",
