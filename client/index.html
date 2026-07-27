@@ -11,8 +11,6 @@
     <main>
       <h1>CS 553 Task Manager</h1>
 
-      <p>Signed-in users can load items; only admins can add them.</p>
-
       <section>
         <h2>Login</h2>
         <form id="login-form">
@@ -32,16 +30,18 @@
 
       <section>
         <h2>Tasks</h2>
+        <p style="color: blue;"><b>Signed-in users can list tasks.</b></p>
         <button id="load-items">Load Tasks</button>
         <ul id="items"></ul>
       </section>
 
       <section>
-        <h2>Add Item</h2>
-        <form id="add-item-form">
-          <label for="item-name">Item name</label>
-          <input id="item-name" name="name" required />
-          <button type="submit">Add</button>
+        <h2>Delete Task</h2>
+        <p style="color: red;"><b>Only admins can delete tasks.</b></p>
+        <form id="delete-item-form">
+          <label for="item-nbr">Task Number</label>
+          <input id="item-nbr" name="item-nbr" required />
+          <button type="submit">Delete</button>
         </form>
       </section>
 

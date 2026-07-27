@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TRIGGER set_update_date
+CREATE TRIGGER trg_task_update
     BEFORE UPDATE ON tasks
     FOR EACH ROW
     EXECUTE FUNCTION update_mod_date();
