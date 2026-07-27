@@ -18,55 +18,93 @@ The following requirements were implemented:
 - Protected routes (role-based)
 - Relational tables with foreign keys
 
-
 ----------
 
 ### Capabilities
 
-The first milestone used unprotected routes, so a bash script with `curl`
-commands was provided.
+In this second milestone, a basic web page interface was created to test
+logins and tokens and display tasks.  Additionally, tasks can be deleted,
+but only by the `admin` role. This web page must be tested manually.
 
-In this second milestone, a basic web page interface was created to manage
-login and tokens.  Therefore, there is no test file.  Testing occurs manually
-via the web page interface.  All of the previous routes are still in place,
-but the web page only demonstrates listing tasks (user or admin) and deleting
-tasks (admin only).
+All of the previous routes from milestone one are still in place, but now,
+most of them require authentication, and a few of them requires the `admin`
+role in order to work. A new bash script has been provided which stores
+login tokens in environment variables and then uses those tokens to run 
+`curl` commands.
+
+Three HTTP ports are used: http-server 5173, api server 3000, and Docker
+PostgreSQL database 5433.
 
 ----------
 
-### How to Run the Program
+### How to Run the `CURL` test script
 
 **1. Fork the repository & clone it to your computer**
 
 **2. Open a terminal and run the following:**
 ```shell
+$ export JWT_SECRET='Rich Purnell is a steely-eyed missile man.'
+$ sudo apt update
+$ sudo apt install jq
 $ cd `cs553-project`
+$ npm install
 $ sudo docker compose up
 ```
-The database should builds itself automatically except for populating `user`
-and `admin` in the `users` table.  Hit 'd' to detach the docker container and
-return to the terminal.
+The database should build itself automatically except that the `user` passwords
+are set to `pending` in the `users` table.
+
+Hit 'd' to detach the docker container and return to the terminal.
 
 **3. Continue in the same terminal:**
 ```shell
-$ npm install
-$ sudo npm install --global http-server
 $ node server.js &
 ```
 Hit 'Enter' to return to the terminal prompt.
 
-**4. Continue in the same terminal:**
+```shell
+$ ./test-api.sh
+```
+
+**4. Verify that all of the routes work properly.**
+
+----------
+
+### How to Run the Web Interface Program
+
+**1. Fork the repository & clone it to your computer**
+
+**2. Open a terminal and run the following:**
+```shell
+$ export JWT_SECRET='Rich Purnell is a steely-eyed missile man.'
+$ sudo apt update
+$ sudo apt install jq
+$ sudo npm install --global http-server
+$ cd `cs553-project`
+$ npm install
+$ sudo docker compose up
+```
+The database should build itself automatically except that the `user` passwords
+are set to `pending` in the `users` table.
+
+Hit 'd' to detach the docker container and return to the terminal.
+
+**3. Continue in the same terminal:**
+```shell
+$ node server.js &
+```
+Hit 'Enter' to return to the terminal prompt.
+
 ```shell
 $ cd client
 $ http-server -p 5173 &
 ```
 Hit 'Enter' to return to the terminal prompt.
 
-**5. Open a browser (e.g. Chrome) and navigate to `http://localhost:5173`.**
+**4. Open a browser (e.g. Chrome) and navigate to `http://localhost:5173`.**
 
-**6. Login with `user/user-password` or `admin/admin-password`.**
+**5. Login with `user/user-password` or `admin/admin-password`.**
 
-**7. Enjoy the Blinkenlights.**
+**6. Test the web interface.**
 
 ----------
 
