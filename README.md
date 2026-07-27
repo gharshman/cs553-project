@@ -1,4 +1,4 @@
-# API Data Server
+# Task Manager Web App & API Server
 ### with Node.js/Express.js Server & Docker PostgreSQL Database
 
 ### Semester Project for Client/Server Architecture (CS 553)
@@ -7,171 +7,103 @@
 
 The semester project is a **Task Management System**.
 
-Students will implement:
+The following requirements were implemented:
 
 - REST endpoints
 - database integration
 - CRUD operations
 - request validation
+- Basic web page front-end interface
+- Authentication & authorization
+- Protected routes (role-based)
+- Relational tables with foreign keys
 
-Steps Completed So Far:
-
-1. Forked and cloned repository.
-2. Started Docker PostgreSQL container.
-3. Ran schema.sql and tasks.sql (20 software development tasks).
-4. Completed API Endpoints.
-5. Implemented CRUD operations on PostgreSQL database.
-6. Developed bash script to test all operations with `curl`.
-
-
-### Repository Structure
-
-```shell
-cs553-project
-├── .git
-├── apps
-│ ├── api
-│ | └── src
-│ |   ├── config
-│ |   ├── db
-│ |   └── routes
-│ └── client
-├── database
-├── docs
-├── scripts
-├── docker-compose.yml
-└── README.md
-```
 
 ----------
 
 ### Capabilities
 
-At this point, the application allows users to:
+The first milestone used unprotected routes, so a bash script with `curl`
+commands was provided.
 
-| Operation                      | Method              |
-|--------------------------------|:-------------------:|
-| Verify server is running       | GET /health         |
-| Verify database connection     | GET /db-health      |
-| see a list of commands         | GET /               |
-| list all tasks                 | GET /tasks          |
-| list a single task             | GET /tasks/:id      |
-| create a task                  | POST /tasks         |
-| update a task                  | PATCH /tasks/:id    |
-| delete a task                  | DELETE /tasks/:id   |
-
+In this second milestone, a basic web page interface was created to manage
+login and tokens.  Therefore, there is no test file.  Testing occurs manually
+via the web page interface.  All of the previous routes are still in place,
+but the web page only demonstrates listing tasks (user or admin) and deleting
+tasks (admin only).
 
 ----------
 
 ### How to Run the Program
 
-1. Fork the repository & clone it to your computer
+**1. Fork the repository & clone it to your computer**
 
-2. In Terminal #1, run the following:
+**2. Open a terminal and run the following:**
 ```shell
 $ cd `cs553-project`
-$ sudo docker compose up -d        # spin up database
-$ sudo docker exec -it cs453-postgres psql -U postgres -d cs453 -c "SELECT * FROM tasks;"
+$ sudo docker compose up
 ```
-If you see a table of 22 lines of data displayed, then you know that:
-- the Docker container loaded PostgreSQL correctly,
-- loaded the `cs453` database configuration,
-- loaded the `tasks` table schema, and
-- populated the seed data.
+The database should builds itself automatically except for populating `user`
+and `admin` in the `users` table.  Hit 'd' to detach the docker container and
+return to the terminal.
 
-3. Continue in Terminal #1:
+**3. Continue in the same terminal:**
 ```shell
-$ cd apps/api
 $ npm install
-$ npm run dev
+$ sudo npm install --global http-server
+$ node server.js &
 ```
+Hit 'Enter' to return to the terminal prompt.
 
-4. Open a new terminal: Terminal #2, and run the following:
+**4. Continue in the same terminal:**
 ```shell
-$ cd cs553-project
-$ ./test-script.bash
+$ cd client
+$ http-server -p 5173 &
 ```
+Hit 'Enter' to return to the terminal prompt.
 
-5. Enjoy the Blinkenlights and keep hitting the spacebar.
+**5. Open a browser (e.g. Chrome) and navigate to `http://localhost:5173`.**
+
+**6. Login with `user/user-password` or `admin/admin-password`.**
+
+**7. Enjoy the Blinkenlights.**
 
 ----------
 
+# Resetting the Database
 
-# Database
-
-This project uses PostgreSQL running in Docker.
-
-## Setting up the database
-
+**1. In your terminal, enter the following:**
 ```shell
-docker compose up -d
-or 
-npm run db:start
-```
-Stop the database
-```shell
-docker compose down 
-or 
-npm run db:stop
-```
-Reset the database completely
-```shell
-docker compose down -v
-or 
-npm run db:reset
-```
-## Default connection settings
-- Database: cs453 
-- User: postgres 
-- Password: postgres 
-- Port: 5432
-
-```dotenv
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cs453
-```
-
-## Creating tables
-
-Run the schema file against the local database after PostgreSQL is running:
-
-```shell
-psql postgresql://postgres:postgres@localhost:5432/cs453 -f database/schema.sql
+$ sudo docker stop cs453-postgres
+$ sudo docker compose down -v
+$ sudo docker compose up
 ```
 
 ----------
 
-### Reflection Questions
+# Shutting Down the App
 
-**1. What is the difference between an in-memory API and a database-backed API?**
+**1. In your terminal, enter the following:**
+```shell
+$ cd ..
+$ jobs
+```
+Note the job numbers for `node server.js` and `http-server`.  They should be 1 and 2 if you started with a fresh terminal.
 
-The difference in persistence of data after you stop the server.  A database that routinely loses
-all of its data is not very useful in production environments.
+**2. To stop the jobs, enter the following:**
+```shell
+$ fg %1
+<Ctrl-C>
+$ fg %2
+<Ctrl-C>
+```
 
-**2. Why is it useful to separate routes, services, and database logic?**
+**3. To stop the jobs, enter the following:**
+```shell
+$ sudo docker stop cs453-postgres
+```
 
-It allows for cleaner code, modularity, and separation of concerns.  It allows parallel development
-and makes the app more scalable.
-
-**3. What HTTP status codes did you use, and why?**
-
-I used the following status codes:
-- `200` for `Okay` or `Success`
-- `201` for `Successful record creation`
-- `400` for `Bad Request` (Client error)
-- `404` for `Record Not Found` (Client error)
-- `500` for `Unknown Error` (or possibly Server Error)
-
-These codes are accepted as standard for these responses.
-
-**4. What happens when a client requests a task ID that does not exist?**
-
-Requesting a single task is handled by the `router.get('/tasks/:id')` endpoint.  Inside this method
-is a **try-catch** block.  If the PostgreSQL server does not find the task ID, it returns an empty
-(not NULL) set.  The API endpoint method tests for zero length of the result set, and if it is zero,
-the API response is `Status Code 404, Record Not Found`.
-
-**5. What was the hardest part of connecting the API to PostgreSQL?**
-
-I did not find that part to be difficult, but I did have trouble (initially) setting up the
-docker-compose.yml file to automatically load the schema and my initial seed data.  But my
-`Google Fu` saved the day.
+**4. To delete the Docker database, enter the following:**
+```shell
+$ sudo docker compose down -v
+```
