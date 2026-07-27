@@ -15,12 +15,14 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS projects (
     id SERIAL PRIMARY KEY,
+    owner_id INT REFERENCES users(id),
     project TEXT NOT NULL CHECK (project <> '')
 );
 
 CREATE TABLE IF NOT EXISTS tasks (
     id SERIAL PRIMARY KEY,
     pid INT REFERENCES projects(id),
+    assgnd_id INT REFERENCES users(id),
     title TEXT NOT NULL CHECK (title <> ''),
     description TEXT,
     status TEXT NOT NULL DEFAULT 'Not Started',
