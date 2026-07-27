@@ -9,7 +9,8 @@
     	"noEmit": true,
 		"rootDir": "src",
 		"outDir": "dist",
-		"strict": true,
+	    "noImplicitAny": false,
+    	"strict": false,
 		"esModuleInterop": true,
 		"skipLibCheck": true
 	},

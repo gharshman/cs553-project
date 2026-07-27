@@ -1,25 +1,40 @@
 {
-	"name": "cs453-project-template",
+	"name": "cs553-project",
 	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"description": "Task Manager API for CS 553",
+	"author": "gharshman",
+	"main": "server.js",
 	"type": "module",
+
 	"scripts": {
-		"dev": "npm --prefix apps/api run dev",
-		"db:start": "docker compose up -d",
-		"db:stop": "docker compose down",
-		"db:reset": "docker compose down -v",
-		"format": "biome format --write .",
-		"lint": "biome lint .",
-		"check": "biome check .",
+		"start": "node server.js",
+		"db:start": "sudo docker compose up",
+		"db:stop": "sudo docker compose down",
+		"db:reset": "sudo docker compose down -v",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
+
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/UAH-Computer-Science/cs453-project-template.git"
+		"url": "https://github.com/gharshman/cs553-project.git"
 	},
+
 	"private": true,
+
 	"devDependencies": {
-		"@biomejs/biome": "2.4.13"
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.6",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/node": "^25.5.0",
+		"@types/pg": "^8.18.0"
+	},
+
+	"dependencies": {
+		"bcryptjs": "^3.0.3",
+		"cors": "^2.8.6",
+		"express": "^5.2.1",
+		"jsonwebtoken": "^9.0.3",
+		"pg": "^8.22.0"
 	}
+
 }
