@@ -117,7 +117,6 @@ owner but can have many tasks.  Tasks can have only one project and one assignee
 
 **7. What was the hardest part of adding authentication or authorization?**
 
-I could not get it to work properly with the routes all broken out into different files.
-I know that you did not want all of the routes in one file, but that was the only way that
-I could get it to work.  I wish that we had spent some class time on that.
+The hardest part was putting all of it in a route file and getting it to work properly.
+But after the Example 3b video, I was able to get it to work.
 
